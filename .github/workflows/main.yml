@@ -18,10 +18,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install packages
         run: |
-          yarn install
+          pnpm install
       - name: Run tests
         run: |
-          yarn test
+          pnpm test
       - name: Build code
         run: |
-          yarn build
+          pnpm build
