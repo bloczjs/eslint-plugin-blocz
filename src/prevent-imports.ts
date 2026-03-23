@@ -50,7 +50,7 @@ const rule: Rule.RuleModule = {
           return;
         }
         const foundOptions = (context.options as RuleConfig).filter(
-          (option) => moduleName === option.module
+          (option) => moduleName === option.module,
         );
         if (foundOptions.length === 0) {
           // No setting about this import statement
@@ -71,12 +71,20 @@ const rule: Rule.RuleModule = {
             continue;
           }
 
-          // Named import
           let foundOption: Config | undefined;
           let matchedName: string | undefined;
           outer: for (const option of foundOptions) {
             for (const name of option.names) {
-              if (name === specifier.imported.name) {
+              // All possible ImportSpecifier forms:
+              // - import { foo } from "mod"           → imported: Identifier("foo")
+              // - import { foo as bar } from "mod"    → imported: Identifier("foo")
+              // - import { "foo" as bar } from "mod"  → imported: Literal("foo") (ES2022+)
+
+              const importedName =
+                specifier.imported.type === "Identifier"
+                  ? specifier.imported.name // `foo` in both `import { foo } from "mod"` and `import { foo as bar } from "mod"`
+                  : String(specifier.imported.value); // `foo` in `import { "foo" as bar } from "mod"`
+              if (name === importedName) {
                 foundOption = option;
                 matchedName = name;
                 break outer;
@@ -121,7 +129,7 @@ const rule: Rule.RuleModule = {
         checkNode(
           node.left.name,
           node.right.name,
-          node as unknown as ESTree.Node
+          node as unknown as ESTree.Node,
         );
       },
 
