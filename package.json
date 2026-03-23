@@ -25,7 +25,7 @@
     "@types/eslint": "^8.21.2",
     "@types/estree": "^1.0.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "@typescript-eslint/utils": "^5.55.0",
+    "@typescript-eslint/utils": "^8.57.1",
     "eslint": "^8.35.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.9.3"
