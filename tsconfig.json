@@ -7,8 +7,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
+    "rootDir": "./src/",
     "declaration": true,
-    "removeComments": true
+    "removeComments": true,
+    "types": ["node"]
   },
   "exclude": ["tests/"]
 }
