@@ -1,5 +1,5 @@
-import preferredExportDefaultNaming from "./preferred-export-default-naming";
-import preventImports from "./prevent-imports";
+import preferredExportDefaultNaming from "./preferred-export-default-naming.js";
+import preventImports from "./prevent-imports.js";
 
 const config = {
   rules: {

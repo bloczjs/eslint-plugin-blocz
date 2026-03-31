@@ -14,7 +14,6 @@ const rule: Rule.RuleModule = {
 
     docs: {
       description: "set preferred name for default imports",
-      category: "Stylistic Issues",
     },
 
     fixable: "code",
@@ -39,7 +38,7 @@ const rule: Rule.RuleModule = {
     return {
       ImportDeclaration(node) {
         const foundOption = (context.options as RuleConfig).find(
-          (option) => node.source.value === option.module
+          (option) => node.source.value === option.module,
         );
         if (!foundOption) {
           // No setting about this import statement
@@ -49,7 +48,7 @@ const rule: Rule.RuleModule = {
         const foundImportDefaultSpecifier = node.specifiers.find(
           (specifier) =>
             specifier.type === "ImportDefaultSpecifier" ||
-            specifier.type === "ImportNamespaceSpecifier"
+            specifier.type === "ImportNamespaceSpecifier",
         );
         if (!foundImportDefaultSpecifier) {
           // No default import in this statement
@@ -61,7 +60,7 @@ const rule: Rule.RuleModule = {
         // If the import doesn’t match the setting
         if (foundImportDefaultSpecifier.local.name !== foundOption.name) {
           messages.push(
-            `The preferred name of the ${foundOption.module}'s default export is "${foundOption.name}"`
+            `The preferred name of the ${foundOption.module}'s default export is "${foundOption.name}"`,
           );
         }
 
@@ -70,7 +69,7 @@ const rule: Rule.RuleModule = {
           foundOption.preferNamespace
         ) {
           messages.push(
-            `"${foundOption.module}" should be used with "import *"`
+            `"${foundOption.module}" should be used with "import *"`,
           );
         }
 
@@ -79,7 +78,7 @@ const rule: Rule.RuleModule = {
           !foundOption.preferNamespace
         ) {
           messages.push(
-            `"${foundOption.module}" should be used with default imports`
+            `"${foundOption.module}" should be used with default imports`,
           );
         }
 
@@ -102,18 +101,18 @@ const rule: Rule.RuleModule = {
                 foundImportDefaultSpecifier,
                 `${foundOption.preferNamespace ? "* as " : ""}${
                   foundOption.name
-                }`
+                }`,
               ),
             ];
 
             // Fix every usage of this import
-            for (const variable of context.getDeclaredVariables(
-              foundImportDefaultSpecifier
+            for (const variable of context.sourceCode.getDeclaredVariables(
+              foundImportDefaultSpecifier,
             )) {
               fixes.push(
                 ...variable.references.map((reference) =>
-                  fixer.replaceText(reference.identifier, foundOption.name)
-                )
+                  fixer.replaceText(reference.identifier, foundOption.name),
+                ),
               );
             }
 

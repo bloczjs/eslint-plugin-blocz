@@ -1,6 +1,8 @@
 import { RuleTester } from "eslint";
 
-import rule, { type RuleConfig } from "../src/preferred-export-default-naming";
+import rule, {
+  type RuleConfig,
+} from "../src/preferred-export-default-naming.ts";
 
 const suites: Array<{
   file: string;
@@ -42,7 +44,6 @@ const suites: Array<{
       },
     ],
     errors: [`"react" should be used with default imports`],
-    output: "import * as React from 'react';",
   },
 
   {
@@ -107,7 +108,6 @@ const suites: Array<{
       },
     ],
     errors: ['The preferred name of the react\'s default export is "React"'],
-    output: "import react from 'react';",
   },
 
   {
@@ -169,14 +169,12 @@ const suites: Array<{
     errors: [
       `The preferred name of the react's default export is "React"\n"react" should be used with "import *"`,
     ],
-    output:
-      "import react from 'react';const element = react.createElement('div');",
   },
 ];
 
 for (const suite of suites) {
   const ruleTester = new RuleTester({
-    parserOptions: { ecmaVersion: 2018, sourceType: "module" },
+    languageOptions: { ecmaVersion: 2018, sourceType: "module" },
   });
 
   const valid: RuleTester.ValidTestCase[] = [];
@@ -187,7 +185,7 @@ for (const suite of suites) {
       name: suite.file,
       filename: suite.file,
       code: suite.code,
-      output: suite.output ?? suite.code,
+      output: suite.output || null,
       errors: suite.errors,
       options: suite.config,
     });

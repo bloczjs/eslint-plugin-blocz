@@ -1,6 +1,7 @@
 import { RuleTester } from "eslint";
+import tsEslintParser from "@typescript-eslint/parser";
 
-import rule, { type RuleConfig } from "../src/prevent-imports";
+import rule, { type RuleConfig } from "../src/prevent-imports.ts";
 
 const suites: Array<{
   file: string;
@@ -67,9 +68,11 @@ const suites: Array<{
 
 for (const suite of suites) {
   const ruleTester = new RuleTester({
-    // @ts-expect-error
-    parser: require.resolve("@typescript-eslint/parser"),
-    parserOptions: { ecmaVersion: 2018, sourceType: "module" },
+    languageOptions: {
+      ecmaVersion: 2018,
+      sourceType: "module",
+      parser: tsEslintParser,
+    },
   });
 
   const valid: RuleTester.ValidTestCase[] = [];
@@ -80,7 +83,7 @@ for (const suite of suites) {
       name: suite.file,
       filename: suite.file,
       code: suite.code,
-      output: suite.output ?? suite.code,
+      output: suite.output || null,
       errors: suite.errors,
       options: suite.config,
     });
