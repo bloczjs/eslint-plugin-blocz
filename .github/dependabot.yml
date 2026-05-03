@@ -20,6 +20,7 @@ updates:
           - "@types/react-dom"
       typescript-eslint:
         patterns:
+          - "typescript-eslint"
           - "@typescript-eslint/*"
 
   - package-ecosystem: "github-actions"
